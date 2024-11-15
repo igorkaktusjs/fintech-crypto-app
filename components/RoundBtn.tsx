@@ -6,7 +6,7 @@ import Colors from '@/constants/Colors';
 type RoundBtnProps = {
     text: string;
     icon: typeof Ionicons.defaultProps;
-    onPress: () => void;
+    onPress?: () => void;
 }
 
 const RoundBtn = ({icon, text,onPress}: RoundBtnProps) => {
