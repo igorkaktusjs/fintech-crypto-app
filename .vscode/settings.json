@@ -1,0 +1,6 @@
+{
+    "diffEditor.wordWrap": "off",
+    "workbench.sideBar.location": "left",
+    "editor.suggest.showIcons": true,
+    "workbench.activityBar.iconClickBehavior": "toggle"
+}

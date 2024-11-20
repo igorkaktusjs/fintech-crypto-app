@@ -12,6 +12,9 @@ import { StatusBar } from 'react-native';
 import { ClerkProvider, ClerkLoaded, useAuth } from '@clerk/clerk-expo'
 const CLERK_PUBLISHABLE_KEY = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY;
 import * as SecureStore from 'expo-secure-store'
+import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
+
+const quetyClient = new QueryClient()
 
 //Cache the Clerk JWT
 const tokenCache = {
@@ -74,7 +77,7 @@ const InitialLayout = () => {
     const inAuthGroup = segments[0] === '(authenticated)';
 
     if(!isSignedIn && !inAuthGroup) {
-      router.replace('/(authenticated)/(tabs)/home');
+      router.replace('/(authenticated)/(tabs)/crypto');
     } else if (!isSignedIn) {
       router.replace('/(authenticated)/(tabs)/home');
     }
@@ -87,7 +90,8 @@ const InitialLayout = () => {
   }
 
   return <Stack>
-  <Stack.Screen name="(authenticated)/(tabs)"  options={{ headerShown: false}}/>
+  <Stack.Screen name="(authenticated)/(tabs)/crypto"  options={{ headerShown: false}}/>
+  
   <Stack.Screen name='index' options={{headerShown: false}}/>
   <Stack.Screen 
     name='signup' 
@@ -151,6 +155,7 @@ const InitialLayout = () => {
         </Link>
       )
       }}/>
+      <Stack.Screen name="(authenticated)/(tabs)"  options={{ headerShown: false}}/>
 </Stack>
 }
 
@@ -158,10 +163,13 @@ const RootLayoutNav = () => {
 
   return (
     <ClerkProvider publishableKey={CLERK_PUBLISHABLE_KEY!} tokenCache={tokenCache}>
-      <GestureHandlerRootView style={{flex: 1}}>
-        <StatusBar style="light" /> 
-        <InitialLayout/>
-      </GestureHandlerRootView>
+      <QueryClientProvider client={quetyClient}>
+          <GestureHandlerRootView style={{flex: 1}}>
+            <StatusBar style="light" /> 
+            <InitialLayout/>
+        </GestureHandlerRootView>
+      </QueryClientProvider>
+      
     </ClerkProvider>  
   );
 }
