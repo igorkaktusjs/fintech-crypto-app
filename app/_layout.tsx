@@ -5,7 +5,7 @@ import { Stack, useRouter, Link, useSegments } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
-import { TouchableOpacity, Text } from 'react-native';
+import { TouchableOpacity, Text,View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { StatusBar } from 'react-native';
@@ -156,6 +156,30 @@ const InitialLayout = () => {
       )
       }}/>
       <Stack.Screen name="(authenticated)/(tabs)"  options={{ headerShown: false}}/>
+      <Stack.Screen 
+        name='(authenticated)/crypto/[id]'
+        options={{
+          title: '',
+          headerLeft: () => (
+            <TouchableOpacity onPress={router.back}>
+                <Ionicons name='arrow-back' size={34} color={Colors.dark}/>
+            </TouchableOpacity>
+          ),
+          headerLargeTitle: true,
+          headerTransparent: true,
+          headerRight: () => (
+            <View style={{flexDirection: 'row', gap: 10}}>
+              <TouchableOpacity>
+                <Ionicons name='notifications-outline' size={30} color={Colors.dark}/>
+              </TouchableOpacity>
+              <TouchableOpacity>
+                <Ionicons name='star-outline' size={30} color={Colors.dark}/>
+              </TouchableOpacity>
+
+            </View>
+          )
+        }}
+      />
 </Stack>
 }
 
