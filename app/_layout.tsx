@@ -13,6 +13,7 @@ import { ClerkProvider, ClerkLoaded, useAuth } from '@clerk/clerk-expo'
 const CLERK_PUBLISHABLE_KEY = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY;
 import * as SecureStore from 'expo-secure-store'
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
+import { UserInactivityProvider }from '@/context/UserInactivity'
 
 const quetyClient = new QueryClient()
 
@@ -76,10 +77,10 @@ const InitialLayout = () => {
 
     const inAuthGroup = segments[0] === '(authenticated)';
 
-    if(!isSignedIn && !inAuthGroup) {
-      router.replace('/(authenticated)/(tabs)/crypto');
-    } else if (!isSignedIn) {
+    if (isSignedIn && !inAuthGroup) {
       router.replace('/(authenticated)/(tabs)/home');
+    } else if (!isSignedIn) {
+      router.replace('/(authenticated)/(tabs)/crypto');
     }
 
 
@@ -180,6 +181,10 @@ const InitialLayout = () => {
           )
         }}
       />
+        <Stack.Screen
+        name="(authenticated)/(modals)/lock"
+        options={{ headerShown: false, animation: 'none' }}
+      />
 </Stack>
 }
 
@@ -188,10 +193,12 @@ const RootLayoutNav = () => {
   return (
     <ClerkProvider publishableKey={CLERK_PUBLISHABLE_KEY!} tokenCache={tokenCache}>
       <QueryClientProvider client={quetyClient}>
+        <UserInactivityProvider>
           <GestureHandlerRootView style={{flex: 1}}>
             <StatusBar style="light" /> 
             <InitialLayout/>
-        </GestureHandlerRootView>
+          </GestureHandlerRootView>
+        </UserInactivityProvider>
       </QueryClientProvider>
       
     </ClerkProvider>  
